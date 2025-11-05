@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casamento Mariana & Mateus 💍</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      background-color: #0b132b;
+      color: #fff;
+      text-align: center;
+    }
+    header {
+      background: linear-gradient(180deg, #0b132b 0%, #1c2541 100%);
+      padding: 60px 20px;
+      color: #ffd700;
+    }
+    header h1 {
+      font-size: 2.8em;
+      margin-bottom: 0.2em;
+    }
+    header p {
+      font-size: 1.3em;
+      color: #f0e68c;
+    }
+    .countdown {
+      font-size: 2em;
+      color: #ffd700;
+      margin: 40px 0;
+    }
+    section {
+      padding: 40px 20px;
+    }
+    h2 {
+      color: #ffd700;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    form {
+      background-color: #1c2541;
+      display: inline-block;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      font-family: 'Georgia', serif;
+    }
+    input[type="submit"] {
+      background-color: #ffd700;
+      color: #0b132b;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    input[type="submit"]:hover {
+      background-color: #f0e68c;
+    }
+    .success {
+      color: #ffd700;
+      font-size: 1.2em;
+      margin-top: 15px;
+    }
+    .map-button {
+      background-color: #ffd700;
+      color: #0b132b;
+      font-weight: bold;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1em;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 15px;
+      transition: 0.3s;
+    }
+    .map-button:hover {
+      background-color: #f0e68c;
+      transform: scale(1.05);
+    }
+    footer {
+      background-color: #1c2541;
+      color: #ffd700;
+      padding: 20px;
+      font-size: 1em;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Mariana & Mateus</h1>
+    <p>Com amor e fé, convidam você a celebrar o início de uma nova história 💛</p>
+  </header>
+
+  <section id="countdown-section">
+    <h2>Contagem Regressiva</h2>
+    <div class="countdown" id="countdown"></div>
+  </section>
+
+  <section id="local">
+    <h2>Local da Cerimônia</h2>
+    <p>Esperamos por você para celebrar este momento tão especial 💍</p>
+    <a href="https://maps.app.goo.gl/qfBZbgWA9cL4niWJ8" target="_blank" class="map-button">Ver Local no Google Maps</a>
+  </section>
+
+  <section id="confirmacao">
+    <h2>Confirme Sua Presença</h2>
+    <form id="rsvp-form">
+      <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+      <textarea id="mensagem" name="mensagem" placeholder="Deixe uma mensagem aos noivos 💬" rows="3"></textarea>
+      <input type="submit" value="Confirmar Presença">
+      <div class="success" id="success-message"></div>
+    </form>
+  </section>
+
+  <footer>
+    <p>Com carinho, Mariana & Mateus 💙</p>
+  </footer>
+
+  <script>
+    // === Contagem regressiva ===
+    const targetDate = new Date("August 15, 2026 00:00:00").getTime();
+    const countdownEl = document.getElementById("countdown");
+
+    setInterval(() => {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdownEl.innerHTML = `${days} dias, ${hours}h ${minutes}m ${seconds}s`;
+
+      if (distance < 0) {
+        countdownEl.innerHTML = "Chegou o grande dia! 💍";
+      }
+    }, 1000);
+
+    // === Envio do formulário ===
+    const form = document.getElementById("rsvp-form");
+    const successMessage = document.getElementById("success-message");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = {
+        nome: document.getElementById("nome").value,
+        mensagem: document.getElementById("mensagem").value
+      };
+      
+      const response = await fetch("https://script.google.com/macros/s/AKfycbwVejGpC_nKVrvr_ExkAMTdT-2p7CBYwDv5NnUCZapZ-hIo5mOa7gn256n8_K-QKOiK5g/exec", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        successMessage.textContent = "💖 Presença confirmada com sucesso! Obrigado pelo carinho!";
+        form.reset();
+      } else {
+        successMessage.textContent = "❌ Ocorreu um erro. Tente novamente mais tarde.";
+      }
+    });
+  </script>
+
+</body>
+</html>
